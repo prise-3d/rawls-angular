@@ -2,15 +2,48 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
+import { SceneListComponent } from './scene-list/scene-list.component';
+import { ImageSceneComponent } from './scene-list/image-scene/image-scene.component';
+import { PixelStatComponent } from './stat/pixel-stat/pixel-stat.component';
+import { ListPixelStatComponent } from './stat/list-pixel-stat/list-pixel-stat.component';
+import { HomeComponent } from './home/home.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
+import { RouterModule, Routes } from '@angular/router';
+import { RawlsApiService } from './services/rawls-api.service';
+
+const appRoutes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'list', component: SceneListComponent },
+  { path: ':name_scene/png/ref', component: ImageSceneComponent },
+  { path: ':name_scene/:x/:y', component: PixelStatComponent },
+  { path: ':name_scene/:x/:y/:nb_samples', component: PixelStatComponent },
+  { path: ':name_scene', component: ListPixelStatComponent },
+  { path: '', redirectTo: 'list', pathMatch: 'full'},
+  { path: '**', redirectTo: 'list'}
+]
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    SceneListComponent,
+    ImageSceneComponent,
+    PixelStatComponent,
+    ListPixelStatComponent,
+    HomeComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+    RawlsApiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
