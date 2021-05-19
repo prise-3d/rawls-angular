@@ -22,7 +22,7 @@ export class SceneListComponent implements OnInit, OnDestroy {
         this.list_scenes = list_scenes;
       }
     );
-    this.rawlsApiService.listOfScenes();
+    this.rawlsApiService.getListOfScenes();
     this.rawlsApiService.emitListScenes();
   }
 

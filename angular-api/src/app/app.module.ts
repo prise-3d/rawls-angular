@@ -12,14 +12,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
 import { RawlsApiService } from './services/rawls-api.service';
+import { UpComponent } from './up/up.component';
+import { PixelStatFormComponent } from './stat/pixel-stat/pixel-stat-form/pixel-stat-form.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'list', component: SceneListComponent },
   { path: ':name_scene/png/ref', component: ImageSceneComponent },
+  { path: ':name_scene/pixelStatForm', component: PixelStatFormComponent },
   { path: ':name_scene/:x/:y', component: PixelStatComponent },
   { path: ':name_scene/:x/:y/:nb_samples', component: PixelStatComponent },
   { path: ':name_scene', component: ListPixelStatComponent },
+  { path: 'up', component: UpComponent},
   { path: '', redirectTo: 'list', pathMatch: 'full'},
   { path: '**', redirectTo: 'list'}
 ]
@@ -32,7 +36,9 @@ const appRoutes: Routes = [
     ImageSceneComponent,
     PixelStatComponent,
     ListPixelStatComponent,
-    HomeComponent
+    HomeComponent,
+    UpComponent,
+    PixelStatFormComponent
   ],
   imports: [
     BrowserModule,
