@@ -14,6 +14,7 @@ export class PixelStatFormComponent implements OnInit {
 
   statPixelForm: FormGroup;
   statPixelSubscription: Subscription;
+  name_scene: string = this.router.url.split('/')[1]
 
   statPixel: string;
 
@@ -40,18 +41,17 @@ export class PixelStatFormComponent implements OnInit {
   }
 
   onSubmit(){
-    const name_scene = this.router.url.split('/')[1]
     const x = this.statPixelForm.get('x').value;
     const y = this.statPixelForm.get('y').value;
     const samples = this.statPixelForm.get('samples').value;
     if (samples) {
-      this.rawlsApiService.getStatPixelWithSamples(name_scene,x,y,samples);
+      this.rawlsApiService.getStatPixelWithSamples(this.name_scene,x,y,samples);
       this.rawlsApiService.emitStatPixel();
-      this.router.navigate(['/'+name_scene+'/'+x+'/'+y+'/'+samples])
+      this.router.navigate(['/'+this.name_scene+'/'+x+'/'+y+'/'+samples])
     } else {
-      this.rawlsApiService.getStatPixel(name_scene,x,y);
+      this.rawlsApiService.getStatPixel(this.name_scene,x,y);
       this.rawlsApiService.emitStatPixel();
-      this.router.navigate(['/'+name_scene+'/'+x+'/'+y])
+      this.router.navigate(['/'+this.name_scene+'/'+x+'/'+y])
     }
     
   }

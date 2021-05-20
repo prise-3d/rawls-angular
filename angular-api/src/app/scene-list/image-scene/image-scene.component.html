@@ -1,8 +1,11 @@
 <div class="rows">
     <div class="col-xs-12">
-        <!-- <img style="max-width: 400px;" *ngIf="book.photo" [src]="book.photo"> -->
-        <h1>{{ image }}</h1>
-        <button class="btn btn-default" (click)="onBack()">Back</button>
+        <div>
+            <h1>Image :</h1>
+            <img *ngIf="!error" [src]="image">
+            <p *ngIf="error">{{ image }}</p>
+        </div>
+        <button class="btn btn-default" (click)="onList()">Get list</button>
         <button class="btn btn-default" (click)="onStat()">Get stat !</button>
     </div>
 </div>

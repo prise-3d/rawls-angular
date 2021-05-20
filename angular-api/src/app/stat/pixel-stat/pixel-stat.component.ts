@@ -24,7 +24,6 @@ export class PixelStatComponent implements OnInit {
       }
     );
     this.rawlsApiService.emitStatPixel();
-    alert(this.statPixel)
   }
 
   onBack() {

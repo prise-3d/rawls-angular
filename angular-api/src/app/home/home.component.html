@@ -1,1 +1,42 @@
-<p>home works!</p>
+<div class="rows">
+    <div class="col-xs-12">
+        <h1>Home Page</h1>
+        <p>
+            <label for="scene-select">Choose a scene:</label><br>
+            <select id="scene-select" (change)="onChange($event.target.value)">
+                <option value="" ></option>
+                <option value="{{ scene }}" *ngFor="let scene of list_scenes" >{{ scene }} </option>
+            </select>
+        </p>
+        <div id="Global">
+            <div class="col-xs-6" *ngIf="image">
+                <div>
+                    <img *ngIf="!error" style="max-width: 300px;" [src]="image">
+                    <p *ngIf="error">{{ image }}</p>
+                </div>
+                <div>
+                    <h2>Get the statistique of the pixel of the scene : {{ name_scene }}</h2>
+                    <form [formGroup]="statPixelForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="x">Horizontal coordinate (X) :</label>
+                            <input type="number" class="form-control" id="x" formControlName="x">
+                        </div>
+                        <div class="form-group">
+                            <label for="y">Vertical coordinate (Y) :</label>
+                            <input type="number" class="form-control" id="y" formControlName="y">
+                        </div>
+                        <div class="form-group">
+                            <label for="samples">Number of samples you use for a statistique (default : 50 samples) :</label>
+                            <input type="number" class="form-control" id="samples" formControlName="samples">
+                        </div>
+                        <button class="btn btn-success" [disabled]="statPixelForm.invalid" type="submit">Get stat</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-xs-6" *ngIf="statActive">
+                {{ statPixel }}
+            </div>
+        </div>
+    </div>
+</div>
+

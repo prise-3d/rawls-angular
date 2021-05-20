@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 })
 export class RawlsApiService {
 
+  urlAPI: string = 'http://127.0.0.1:5001/';
+
   x: number;
   y: number;
   name_scene: string;
@@ -42,7 +44,7 @@ export class RawlsApiService {
 
   async getListOfScenes(){
     this.list_scenes = []
-    await this.http.get<any>('http://127.0.0.1:5001/list').toPromise().then(data => {
+    await this.http.get<any>(this.urlAPI+'list').toPromise().then(data => {
             this.userAPI = data.rawls_folders;
             this.userAPI.forEach(element => {
               this.list_scenes.push(element)
@@ -52,7 +54,7 @@ export class RawlsApiService {
   }
 
   async getUp() {
-    await this.http.get<any>('http://127.0.0.1:5001/up').toPromise().then(
+    await this.http.get<any>(this.urlAPI+'up').toPromise().then(
       data => {
         this.up = data;
       }
@@ -61,7 +63,7 @@ export class RawlsApiService {
   }
 
   async getImage(name_scene: string) {
-    await this.http.get<any>('http://127.0.0.1:5001/'+name_scene+'/png/ref').toPromise().then(
+    await this.http.get<any>(this.urlAPI+name_scene+'/png/ref').toPromise().then(
       data => {
         if (data.image_path) {
           this.image_path = data.image_path;
@@ -74,17 +76,26 @@ export class RawlsApiService {
   }
 
   async getStatPixel(name_scene: string, x: number, y: number) {
-    await this.http.get<any>('http://127.0.0.1:5001/'+name_scene+'/'+x+'/'+y).toPromise().then(
+    await this.http.get<any>(this.urlAPI+name_scene+'/'+x+'/'+y).toPromise().then(
       data => {
-        this.statPixel = data;
+        if (data.error) {
+          this.statPixel = data.error;
+        } else {
+          this.statPixel = data;
+        }
       }
     );
     this.emitStatPixel();
   }
 
   async getStatPixelWithSamples(name_scene: string, x: number, y: number, samples: number) {
-    await this.http.get<any>('http://127.0.0.1:5001/'+name_scene+'/'+x+'/'+y+'/'+samples).toPromise().then(data => {
-            this.statPixel = data;
+    await this.http.get<any>(this.urlAPI+name_scene+'/'+x+'/'+y+'/'+samples).toPromise().then(
+      data => {
+        if (data.error) {
+          this.statPixel = data.error;
+        } else {
+          this.statPixel = data;
+        }
     });
     this.emitStatPixel();
   }

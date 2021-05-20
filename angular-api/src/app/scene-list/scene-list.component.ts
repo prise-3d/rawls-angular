@@ -11,7 +11,7 @@ import { RawlsApiService } from '../services/rawls-api.service';
 export class SceneListComponent implements OnInit, OnDestroy {
 
   list_scenes: string[];
-  list_scenesSubscription: Subscription
+  list_scenesSubscription: Subscription;
 
   constructor(private rawlsApiService: RawlsApiService,
               private router: Router) { }

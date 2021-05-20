@@ -13,22 +13,33 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
   image: string;
   imageSubscription: Subscription;
   name_scene: string = this.route.snapshot.params['name_scene'];
+  urlAPI: string;
+
+  error: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private rawlsApiService: RawlsApiService,
-              private router: Router) { }
+              private router: Router) { 
+                this.urlAPI = rawlsApiService.urlAPI;
+              }
 
   ngOnInit(): void {
     this.imageSubscription = this.rawlsApiService.imageSubject.subscribe(
       (image_path: string) => {
-        this.image = image_path;
+        if (image_path.startsWith('ERROR :')) {
+          this.error = true;
+          this.image = image_path;
+        } else {
+          this.error = false;
+          this.image = this.urlAPI + image_path;
+        }
       }
     );
     this.rawlsApiService.getImage(this.name_scene);
     this.rawlsApiService.emitImage();
   }
 
-  onBack() {
+  onList() {
     this.router.navigate(['/list']);
   }
 

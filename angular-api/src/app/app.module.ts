@@ -18,12 +18,12 @@ import { PixelStatFormComponent } from './stat/pixel-stat/pixel-stat-form/pixel-
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'list', component: SceneListComponent },
+  { path: 'up', component: UpComponent},
   { path: ':name_scene/png/ref', component: ImageSceneComponent },
   { path: ':name_scene/pixelStatForm', component: PixelStatFormComponent },
   { path: ':name_scene/:x/:y', component: PixelStatComponent },
   { path: ':name_scene/:x/:y/:nb_samples', component: PixelStatComponent },
   { path: ':name_scene', component: ListPixelStatComponent },
-  { path: 'up', component: UpComponent},
   { path: '', redirectTo: 'list', pathMatch: 'full'},
   { path: '**', redirectTo: 'list'}
 ]
