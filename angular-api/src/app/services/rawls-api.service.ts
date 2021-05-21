@@ -16,8 +16,10 @@ export class RawlsApiService {
   up: string;
   image_path: string;
   statPixel: string;
+  listStatPixel: string;
 
   listSubject = new Subject<string[]>();
+  listStatPixelSubject = new Subject<string>();
   upSubject = new Subject<string>();
   imageSubject = new Subject<string>();
   statPixelSubject = new Subject<string>();
@@ -42,13 +44,19 @@ export class RawlsApiService {
     this.statPixelSubject.next(this.statPixel);
   }
 
+  emitListStatPixel() {
+    this.listStatPixelSubject.next(this.listStatPixel);
+  }
+
   async getListOfScenes(){
     this.list_scenes = []
     await this.http.get<any>(this.urlAPI+'list').toPromise().then(data => {
             this.userAPI = data.rawls_folders;
-            this.userAPI.forEach(element => {
-              this.list_scenes.push(element)
-            });
+            if (this.userAPI !== undefined) {
+              this.userAPI.forEach(element => {
+                this.list_scenes.push(element)
+              });
+            }
     })
     this.emitListScenes();
   }
@@ -95,6 +103,31 @@ export class RawlsApiService {
           this.statPixel = data.error;
         } else {
           this.statPixel = data;
+        }
+    });
+    this.emitStatPixel();
+  }
+
+  async postListStatPixel(name_scene: string, pixels: number[]) {
+    await this.http.post<any>(this.urlAPI+'/stats_list/'+name_scene,{"pixels": pixels}).toPromise().then(
+      data => {
+        if (data.error) {
+          this.statPixel = data.error;
+        } else {
+          this.statPixel = data;
+        }
+      }
+    );
+    this.emitStatPixel();
+  }
+
+  async postListStatPixelWithSamples(name_scene: string, pixels: number[], samples: number) {
+    await this.http.post<any>(this.urlAPI+'/stats_list/'+name_scene+'/'+samples,{"pixels": pixels}).toPromise().then(
+      data => {
+        if (data.error) {
+          this.listStatPixel = data.error;
+        } else {
+          this.listStatPixel = data;
         }
     });
     this.emitStatPixel();

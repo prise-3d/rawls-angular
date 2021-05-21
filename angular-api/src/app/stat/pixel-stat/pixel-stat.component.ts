@@ -11,6 +11,7 @@ import { RawlsApiService } from 'src/app/services/rawls-api.service';
 export class PixelStatComponent implements OnInit {
 
   statPixel: string;
+  list_stat: string[];
   statPixelSubscription: Subscription;
   name_scene: string = this.router.url.split('/')[1];
 
@@ -20,10 +21,14 @@ export class PixelStatComponent implements OnInit {
   ngOnInit(): void {
     this.statPixelSubscription = this.rawlsApiService.statPixelSubject.subscribe(
       (stat: string) => {
-        this.statPixel = stat;
+        if (stat !== undefined) {
+          this.statPixel = stat;
+          this.list_stat = this.statPixel.split(',');
+        }
       }
     );
     this.rawlsApiService.emitStatPixel();
+    
   }
 
   onBack() {

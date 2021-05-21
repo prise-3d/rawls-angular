@@ -26,13 +26,16 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.imageSubscription = this.rawlsApiService.imageSubject.subscribe(
       (image_path: string) => {
-        if (image_path.startsWith('ERROR :')) {
-          this.error = true;
-          this.image = image_path;
-        } else {
-          this.error = false;
-          this.image = this.urlAPI + image_path;
+        if(image_path !== undefined) {
+          if (image_path.startsWith('ERROR :')) {
+            this.error = true;
+            this.image = image_path;
+          } else {
+            this.error = false;
+            this.image = this.urlAPI + image_path;
+          }
         }
+        
       }
     );
     this.rawlsApiService.getImage(this.name_scene);
@@ -45,6 +48,10 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
 
   onStat() {
     this.router.navigate([this.name_scene+'/pixelStatForm']);
+  }
+
+  onStatList() {
+    this.router.navigate([this.name_scene+'/listPixelStatForm']);
   }
 
   ngOnDestroy(){

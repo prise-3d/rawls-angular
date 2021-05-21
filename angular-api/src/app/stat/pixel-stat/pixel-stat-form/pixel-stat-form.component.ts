@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { RawlsApiService } from 'src/app/services/rawls-api.service';
   styleUrls: ['./pixel-stat-form.component.scss']
 })
 
-export class PixelStatFormComponent implements OnInit {
+export class PixelStatFormComponent implements OnInit, OnDestroy {
 
   statPixelForm: FormGroup;
   statPixelSubscription: Subscription;
@@ -54,6 +54,10 @@ export class PixelStatFormComponent implements OnInit {
       this.router.navigate(['/'+this.name_scene+'/'+x+'/'+y])
     }
     
+  }
+
+  ngOnDestroy() {
+    this.statPixelSubscription.unsubscribe();
   }
 
 }

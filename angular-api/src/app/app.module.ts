@@ -14,16 +14,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { RawlsApiService } from './services/rawls-api.service';
 import { UpComponent } from './up/up.component';
 import { PixelStatFormComponent } from './stat/pixel-stat/pixel-stat-form/pixel-stat-form.component';
+import { ListPixelStatFormComponent } from './stat/list-pixel-stat/list-pixel-stat-form/list-pixel-stat-form.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'list', component: SceneListComponent },
   { path: 'up', component: UpComponent},
+  { path: 'stats_list/:name_scene', component: ListPixelStatComponent },
+  { path: 'stats_list/:name_scene/:nb_samples', component: ListPixelStatComponent },
+  { path: ':name_scene/listPixelStatForm', component: ListPixelStatFormComponent },
   { path: ':name_scene/png/ref', component: ImageSceneComponent },
   { path: ':name_scene/pixelStatForm', component: PixelStatFormComponent },
   { path: ':name_scene/:x/:y', component: PixelStatComponent },
   { path: ':name_scene/:x/:y/:nb_samples', component: PixelStatComponent },
-  { path: ':name_scene', component: ListPixelStatComponent },
   { path: '', redirectTo: 'list', pathMatch: 'full'},
   { path: '**', redirectTo: 'list'}
 ]
@@ -38,7 +41,8 @@ const appRoutes: Routes = [
     ListPixelStatComponent,
     HomeComponent,
     UpComponent,
-    PixelStatFormComponent
+    PixelStatFormComponent,
+    ListPixelStatFormComponent
   ],
   imports: [
     BrowserModule,

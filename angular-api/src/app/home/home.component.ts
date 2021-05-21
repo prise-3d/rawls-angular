@@ -22,7 +22,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   statPixelForm: FormGroup;
   statPixelSubscription: Subscription;
-  name_scene: string
+  list_stat: string[];
+  name_scene: string;
 
   statPixel: string;
 
@@ -60,6 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       (stat: string) => {
         if (stat !== undefined) {
           this.statPixel = stat;
+          this.list_stat = this.statPixel.split(',');
         }
       }
     );

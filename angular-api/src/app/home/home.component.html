@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="col-xs-6" *ngIf="statActive">
-                {{ statPixel }}
+                <h3 *ngFor="let stat of list_stat">{{ stat }}</h3>
             </div>
         </div>
     </div>
