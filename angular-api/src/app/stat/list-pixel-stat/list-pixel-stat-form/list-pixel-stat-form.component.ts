@@ -20,9 +20,6 @@ export class ListPixelStatFormComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private rawlsApiService: RawlsApiService,
               private router: Router) {
-                this.listStatPixelForm = this.formBuilder.group({
-                  pixels: this.formBuilder.array([])
-               });
               }
 
   ngOnInit(): void {
@@ -64,15 +61,10 @@ export class ListPixelStatFormComponent implements OnInit, OnDestroy {
   }
 
   onAddPixel(){
-    // const newXControl = this.formBuilder.control('', [Validators.required, Validators.minLength(0)]);
-    // const newYControl = this.formBuilder.control('', [Validators.required, Validators.minLength(0)]);
-    // const newPixelControl = [newXControl, newYControl]
-    // this.getPixels().controls(newPixelControl);
-    const group = new FormGroup({
-      x: new FormControl('',[Validators.required, Validators.minLength(0)]),
-      y: new FormControl('',[Validators.required, Validators.minLength(0)])
-    });
-    this.getPixels().push(group)
+    const newPixelControl = this.formBuilder.control('[]', Validators.required);
+    
+    
+    this.getPixels().push(newPixelControl)
   }
 
   ngOnDestroy() {

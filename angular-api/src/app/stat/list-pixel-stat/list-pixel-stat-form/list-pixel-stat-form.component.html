@@ -3,16 +3,13 @@
         <div formArrayName="pixels">
             <h2>Get the statistique of the scene : {{ name_scene }}</h2>
             <h3>With this list of the pixel :</h3>
-            <div class="form-group" *ngFor="let pixelControl of getPixels().controls; let i = index">
-                <!-- <input type="number" class="form-control" [formControlName]="i"> -->
-                <ng-container [formArrayName]="pixels">
-                    <div *ngFor="let _ of pixels.controls;">
-                        <input type="number" class="form-control" formControlName="x">
-                        <input type="number" class="form-control" formControlName="y">
-                      </div>
-                  </ng-container>
+            
+            <div formArrayName="pixels">
+                <div class="form-group" *ngFor="let pixelControl of getPixels().controls; let i = index">
+                    <input type="number" class="form-control" [formControlName]="i">
+                </div>
+                <button type="button" class="btn btn-success" (click)="onAddPixel()">Add a pixel</button>
             </div>
-            <button type="button" class="btn btn-success" (click)="onAddPixel()">add a pixel</button>
         </div>
         <button class="btn btn-primary" type="submit" [disabled]="listStatPixelForm.invalid">Submit</button>
     </form>
