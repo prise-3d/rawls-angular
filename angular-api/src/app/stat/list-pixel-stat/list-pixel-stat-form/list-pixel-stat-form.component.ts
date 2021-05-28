@@ -35,7 +35,7 @@ export class ListPixelStatFormComponent implements OnInit, OnDestroy {
   initForm() {
     this.listStatPixelForm = this.formBuilder.group({
       samples: [],
-      pixels: this.formBuilder.array([])
+      pixels: ['',Validators.required]
     });
   }
 
@@ -44,15 +44,18 @@ export class ListPixelStatFormComponent implements OnInit, OnDestroy {
     const pixels =  formValue['pixels'] ? formValue['pixels'] : []
     const samples = formValue['samples'];
     console.log("pixels : "+pixels)
-    // if (samples) {
-    //   this.rawlsApiService.postListStatPixelWithSamples(this.name_scene,pixels,samples);
-    //   this.rawlsApiService.emitListStatPixel();
-    //   this.router.navigate(['/stats_list/'+this.name_scene+'/'+samples])
-    // } else {
-    //   this.rawlsApiService.postListStatPixel(this.name_scene,pixels);
-    //   this.rawlsApiService.emitListStatPixel();
-    //   this.router.navigate(['/stats_list/'+this.name_scene])
-    // }
+    console.log("samples: "+samples)
+    console.log("pixels 1 : "+pixels[0])
+    if (samples) {
+      this.rawlsApiService.postListStatPixelWithSamples(this.name_scene,pixels,samples);
+      this.rawlsApiService.emitListStatPixel();
+      this.router.navigate(['/stats_list/'+this.name_scene+'/'+samples])
+    } else {
+      console.log("before")
+      this.rawlsApiService.postListStatPixel(this.name_scene,pixels);
+      this.rawlsApiService.emitListStatPixel();
+      this.router.navigate(['/stats_list/'+this.name_scene])
+    }
     
   }
 
@@ -61,9 +64,7 @@ export class ListPixelStatFormComponent implements OnInit, OnDestroy {
   }
 
   onAddPixel(){
-    const newPixelControl = this.formBuilder.control('[]', Validators.required);
-    
-    
+    const newPixelControl = this.formBuilder.control('', Validators.required);
     this.getPixels().push(newPixelControl)
   }
 

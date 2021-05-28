@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RawlsApiService } from 'src/app/services/rawls-api.service';
@@ -8,7 +8,7 @@ import { RawlsApiService } from 'src/app/services/rawls-api.service';
   templateUrl: './pixel-stat.component.html',
   styleUrls: ['./pixel-stat.component.scss']
 })
-export class PixelStatComponent implements OnInit {
+export class PixelStatComponent implements OnInit, OnDestroy {
 
   statPixel: string;
   list_stat: string[];

@@ -109,16 +109,20 @@ export class RawlsApiService {
   }
 
   async postListStatPixel(name_scene: string, pixels: number[]) {
-    await this.http.post<any>(this.urlAPI+'/stats_list/'+name_scene,{"pixels": pixels}).toPromise().then(
+    console.log("In")
+    console.log("list : ",pixels)
+    const body=JSON.stringify(pixels)
+    console.log("body = "+body)
+    await this.http.post<any>(this.urlAPI+'stats_list/'+name_scene+'/20',{"pixels": pixels}).toPromise().then(
       data => {
         if (data.error) {
-          this.statPixel = data.error;
+          this.listStatPixel = data.error;
         } else {
-          this.statPixel = data;
+          this.listStatPixel = data;
         }
       }
     );
-    this.emitStatPixel();
+    this.emitListStatPixel();
   }
 
   async postListStatPixelWithSamples(name_scene: string, pixels: number[], samples: number) {
@@ -130,7 +134,7 @@ export class RawlsApiService {
           this.listStatPixel = data;
         }
     });
-    this.emitStatPixel();
+    this.emitListStatPixel();
   }
 
 }
