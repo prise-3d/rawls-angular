@@ -1,13 +1,16 @@
 <div class="col-sm-8 col-sm-offset-2">
     <form [formGroup]="listStatPixelForm" (ngSubmit)="onSubmit()">
-        <h2>Get the statistique of the scene : {{ name_scene }}</h2>
+        <h1>This page doesn't work</h1>
+        <h2>Get the statistic of the scene : {{ name_scene }}</h2>
         <h3>With this list of the pixel :</h3>
         <div class="form-group">
             <label for="samples">Samples :</label>
             <input type="number" id="samples" class="form-control" formControlName="samples">
         </div>
         <div class="form-group">
-            <label for="pixels">Pixels :</label>
+            <label for="pixels">Pixels :
+                <p>Example : [[0,0],[1,1]]</p>
+            </label>
             <input type="text" id="pixels" class="form-control" formControlName="pixels">
         </div>
         <!-- <div formArrayName="pixels">

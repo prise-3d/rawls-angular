@@ -16,6 +16,7 @@ import { UpComponent } from './up/up.component';
 import { PixelStatFormComponent } from './stat/pixel-stat/pixel-stat-form/pixel-stat-form.component';
 import { ListPixelStatFormComponent } from './stat/list-pixel-stat/list-pixel-stat-form/list-pixel-stat-form.component';
 
+// link between path Angular and component
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'list', component: SceneListComponent },

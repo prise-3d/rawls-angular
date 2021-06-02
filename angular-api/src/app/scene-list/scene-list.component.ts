@@ -23,7 +23,9 @@ export class SceneListComponent implements OnInit, OnDestroy {
       }
     );
     this.rawlsApiService.getListOfScenes();
+    console.log("list : "+this.list_scenes);
     this.rawlsApiService.emitListScenes();
+    console.log("list : "+this.list_scenes)
   }
 
   onShowImage(index: number) {

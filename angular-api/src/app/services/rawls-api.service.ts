@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+//This service call API rawls to retrieve the information you want
 export class RawlsApiService {
 
   urlAPI: string = 'http://127.0.0.1:5001/';
@@ -47,7 +48,7 @@ export class RawlsApiService {
   emitListStatPixel() {
     this.listStatPixelSubject.next(this.listStatPixel);
   }
-
+  //call api with : apiRoute + /list
   async getListOfScenes(){
     this.list_scenes = []
     await this.http.get<any>(this.urlAPI+'list').toPromise().then(data => {
@@ -60,7 +61,7 @@ export class RawlsApiService {
     })
     this.emitListScenes();
   }
-
+  //call api with : apiRoute + /up
   async getUp() {
     await this.http.get<any>(this.urlAPI+'up').toPromise().then(
       data => {
@@ -69,20 +70,19 @@ export class RawlsApiService {
     )
     this.emitUp();
   }
-
+  //call api with : apiRoute + /png/ref
   async getImage(name_scene: string) {
     await this.http.get<any>(this.urlAPI+name_scene+'/png/ref').toPromise().then(
       data => {
-        if (data.image_path) {
-          this.image_path = data.image_path;
-        } else {
-          this.image_path = data.error;
-        }
+        this.image_path = data.error;
+      }, reject => {
+        this.image_path = this.urlAPI+name_scene+'/png/ref';
       }
     );
+    console.log(this.image_path)
     this.emitImage();
   }
-
+  //call api with : apiRoute + /x/y
   async getStatPixel(name_scene: string, x: number, y: number) {
     await this.http.get<any>(this.urlAPI+name_scene+'/'+x+'/'+y).toPromise().then(
       data => {
@@ -95,7 +95,7 @@ export class RawlsApiService {
     );
     this.emitStatPixel();
   }
-
+  //call api with : apiRoute + /x/y/samples
   async getStatPixelWithSamples(name_scene: string, x: number, y: number, samples: number) {
     await this.http.get<any>(this.urlAPI+name_scene+'/'+x+'/'+y+'/'+samples).toPromise().then(
       data => {

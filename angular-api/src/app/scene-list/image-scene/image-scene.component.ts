@@ -32,7 +32,7 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
             this.image = image_path;
           } else {
             this.error = false;
-            this.image = this.urlAPI + image_path;
+            this.image = image_path;
           }
         }
         

@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <div>
             <h1>Image :</h1>
-            <img *ngIf="!error" [src]="image">
+            <img *ngIf="!error" [src]='image'>
             <p *ngIf="error">{{ image }}</p>
         </div>
         <button class="btn btn-default" (click)="onList()">Get list</button>
