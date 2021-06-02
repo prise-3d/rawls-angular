@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 //This service call API rawls to retrieve the information you want
 export class RawlsApiService {
 
-  urlAPI: string = 'http://127.0.0.1:5001/';
+  urlAPI: string = 'https://diran.univ-littoral.fr/rawls-api/';
 
   x: number;
   y: number;
