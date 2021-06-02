@@ -2,6 +2,8 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.10.
 
+If you want to change the Url API you just need to modifie the file config.json in `src/app/assets/config.json`. /!\CARE you need to put '/' at the end of the link.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

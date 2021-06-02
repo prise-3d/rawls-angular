@@ -4,8 +4,10 @@
         <div class="list-group">
             <button class="list-group-item"
                     *ngFor="let scene of list_scenes; let i = index"
-                    (click)="onShowImage(i)">
+                    (click)="onShowImage(scene)">
                 <h3 class="list-group-item-text">{{ scene }}</h3>
+                <!-- <img style="max-width: 200px;" [src]="getSrcImage(scene) | async"> -->
+                
             </button>
         </div>
     </div>

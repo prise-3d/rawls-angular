@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import * as config from '../../assets/config.json';
+
 @Injectable({
   providedIn: 'root'
 })
 //This service call API rawls to retrieve the information you want
 export class RawlsApiService {
 
-  urlAPI: string = 'http://127.0.0.1:5001/';
+  urlAPI: string = config.urlAPI;
 
   x: number;
   y: number;
@@ -65,7 +67,7 @@ export class RawlsApiService {
   async getUp() {
     await this.http.get<any>(this.urlAPI+'up').toPromise().then(
       data => {
-        this.up = data;
+        this.up = data.version;
       }
     )
     this.emitUp();

@@ -34,8 +34,7 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
             this.error = false;
             this.image = image_path;
           }
-        }
-        
+        }  
       }
     );
     this.rawlsApiService.getImage(this.name_scene);

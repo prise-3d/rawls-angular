@@ -4,14 +4,13 @@
         <p>
             <label for="scene-select">Choose a scene:</label><br>
             <select id="scene-select" (change)="onChange($event.target.value)">
-                <option value="" ></option>
                 <option value="{{ scene }}" *ngFor="let scene of list_scenes" >{{ scene }} </option>
             </select>
         </p>
         <div id="Global">
             <div class="col-xs-6" *ngIf="image">
                 <div>
-                    <img *ngIf="!error" style="max-width: 300px;" [src]="image">
+                    <img *ngIf="!error" style="max-width: 100%;" [src]="image" (click)="onClick()">
                     <p *ngIf="error">{{ image }}</p>
                 </div>
                 <div>
