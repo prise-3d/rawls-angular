@@ -37,7 +37,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.list_scenesSubscription = this.rawlsApiService.listSubject.subscribe(
       (list_scenes: string[]) => {
-        this.list_scenes = list_scenes;
+        if(list_scenes !== undefined){
+          this.list_scenes = list_scenes;
+          if(list_scenes[0] !== undefined) {
+            this.onChange(list_scenes[0]);
+          }
+        }
       }
     );
     this.rawlsApiService.getListOfScenes();
@@ -102,6 +107,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.rawlsApiService.emitStatPixel();
     }
     this.statActive = true;
+  }
+
+  onClick() {
+    this.router.navigate([this.name_scene,'png','ref'])
   }
 
   ngOnDestroy(){

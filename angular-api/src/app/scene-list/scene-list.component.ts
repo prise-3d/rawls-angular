@@ -13,6 +13,10 @@ export class SceneListComponent implements OnInit, OnDestroy {
   list_scenes: string[];
   list_scenesSubscription: Subscription;
 
+  image: string;
+  error: boolean;
+  imageSubscription: Subscription;
+
   constructor(private rawlsApiService: RawlsApiService,
               private router: Router) { }
 
@@ -23,15 +27,35 @@ export class SceneListComponent implements OnInit, OnDestroy {
       }
     );
     this.rawlsApiService.getListOfScenes();
-    console.log("list : "+this.list_scenes);
     this.rawlsApiService.emitListScenes();
-    console.log("list : "+this.list_scenes)
+    this.imageSubscription = this.rawlsApiService.imageSubject.subscribe(
+      (image_path: string) => {
+        if(image_path !== undefined) {
+          if (image_path.startsWith('ERROR :')) {
+            this.error = true;
+            this.image = image_path;
+          } else {
+            this.error = false;
+            this.image = image_path;
+          }
+        }  
+      }
+    );
   }
 
-  onShowImage(index: number) {
-    const name_scene = this.list_scenes[index];
+  onShowImage(name_scene: string) {
+    // const name_scene = this.list_scenes[index];
     this.router.navigate([name_scene,'png','ref']);
   }
+
+  // async getSrcImage(name_scene: string) {
+  //   if(name_scene !== undefined){  
+  //     this.rawlsApiService.getImage(name_scene);
+  //     this.rawlsApiService.emitImage();
+  //     console.log(this.image)
+  //     return this.image;
+  //   }
+  // }
 
   ngOnDestroy(){
     this.list_scenesSubscription.unsubscribe();
