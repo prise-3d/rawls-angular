@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RawlsApiService } from '../services/rawls-api.service';
 
-import * as config from '../../assets/config.json';
+import { versionInfo } from '../version-info';
+import * as version from '../../../git-version.json';
 
 @Component({
   selector: 'app-up',
@@ -16,9 +17,7 @@ export class UpComponent implements OnInit, OnDestroy {
   
   upSubscription: Subscription;
 
-  constructor(private rawlsApiService: RawlsApiService) { 
-    this.versionAngular = config.version;
-  }
+  constructor(private rawlsApiService: RawlsApiService) { }
 
   ngOnInit(): void {
     this.upSubscription = this.rawlsApiService.upSubject.subscribe(
@@ -28,6 +27,7 @@ export class UpComponent implements OnInit, OnDestroy {
     );
     this.rawlsApiService.getUp();
     this.rawlsApiService.emitUp();
+    this.versionAngular = version.tag;
   }
 
   ngOnDestroy(){

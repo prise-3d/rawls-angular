@@ -6,7 +6,7 @@ If you want to change the Url API you just need to modifie the file config.json 
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 If you have an issue with CLI run `npm install @angular/cli`
 
