@@ -4,8 +4,6 @@ import { RawlsApiService } from '../services/rawls-api.service';
 
 import * as config from '../../assets/config.json';
 
-import { versionInfo } from '../version-info';
-
 @Component({
   selector: 'app-up',
   templateUrl: './up.component.html',
@@ -30,7 +28,6 @@ export class UpComponent implements OnInit, OnDestroy {
     );
     this.rawlsApiService.getUp();
     this.rawlsApiService.emitUp();
-    console.log(versionInfo)
   }
 
   ngOnDestroy(){

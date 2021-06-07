@@ -73,15 +73,27 @@ export class RawlsApiService {
     this.emitUp();
   }
   //call api with : apiRoute + /png/ref
-  async getImage(name_scene: string) {
-    await this.http.get<any>(this.urlAPI+name_scene+'/png/ref').toPromise().then(
-      data => {
-        this.image_path = data.error;
-      }, reject => {
-        this.image_path = this.urlAPI+name_scene+'/png/ref';
-      }
-    );
-    console.log(this.image_path)
+  async getImage(name_scene: string, path?: string) {
+    if (path === "True") {
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAA")
+      await this.http.get<any>(this.urlAPI+name_scene+'/png/ref?path=True').toPromise().then(
+        data => {
+          if (data.error) {
+            this.image_path = data.error;
+          } else {
+            this.image_path = data;
+          }
+        }
+      );
+    } else {
+      await this.http.get<any>(this.urlAPI+name_scene+'/png/ref').toPromise().then(
+        data => {
+          this.image_path = data.error;
+        }, reject => {
+          this.image_path = this.urlAPI+name_scene+'/png/ref';
+        }
+      );
+    }
     this.emitImage();
   }
   //call api with : apiRoute + /x/y
