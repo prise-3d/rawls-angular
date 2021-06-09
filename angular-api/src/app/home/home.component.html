@@ -32,8 +32,21 @@
                     </form>
                 </div>
             </div>
-            <div class="col-xs-6" *ngIf="statActive">
-                <h3 *ngFor="let stat of list_stat">{{ stat }}</h3>
+            <div class="col-xs-6">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" *ngFor="let title of coordPixelTab">{{ title }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let subtitle of subtitleTab; let i = index">
+                            <th scope="row">{{ subtitle }}</th>
+                            <td *ngFor="let stat of statTab[i]">{{stat}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
