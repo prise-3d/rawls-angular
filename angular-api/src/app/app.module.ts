@@ -15,6 +15,7 @@ import { RawlsApiService } from './services/rawls-api.service';
 import { UpComponent } from './up/up.component';
 import { PixelStatFormComponent } from './stat/pixel-stat/pixel-stat-form/pixel-stat-form.component';
 import { ListPixelStatFormComponent } from './stat/list-pixel-stat/list-pixel-stat-form/list-pixel-stat-form.component';
+import { MouseWheelDirective } from './mousewheel.directive'
 
 // link between path Angular and component
 const appRoutes: Routes = [
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     HomeComponent,
     UpComponent,
     PixelStatFormComponent,
-    ListPixelStatFormComponent
+    ListPixelStatFormComponent,
+    MouseWheelDirective
   ],
   imports: [
     BrowserModule,
