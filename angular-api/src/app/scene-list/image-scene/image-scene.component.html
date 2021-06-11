@@ -1,16 +1,13 @@
 <div class="rows">
     <div class="col-xs-12">
-        <button (click)="downloadFile()">download</button>
-        <a [href]="image" download>oui</a>
-        <button (click)="yes()">download</button>
-        <a href="http://127.0.0.1:5001/static/images/p3d_bidir.png" download>non</a>
-        <div>
-            <h1>Image :</h1>
-            <img *ngIf="!error" [src]='image'>
-            <p *ngIf="error">{{ image }}</p>
-        </div>
+        <a [href]="image" download>download image</a>
         <button class="btn btn-default" (click)="onList()">Get list</button>
         <button class="btn btn-default" (click)="onStat()">Get stat for one pixel !</button>
         <button class="btn btn-default" (click)="onStatList()">Get stat for several pixels !</button>
+        <div>
+            <h1>Image :</h1>
+            <img mouseWheel [width]="imgWidth" *ngIf="!error" [src]='image' (click)="onImage($event)" (mouseWheelUp)="mouseWheelUpFunc()" (mouseWheelDown)="mouseWheelDownFunc()">
+            <p *ngIf="error">{{ image }}</p>
+        </div>
     </div>
 </div>
