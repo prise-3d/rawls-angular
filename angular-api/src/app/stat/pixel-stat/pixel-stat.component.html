@@ -15,5 +15,8 @@
                 </tr>
             </tbody>
         </table>
+        <div>
+            <img *ngFor="let image of imageGraphTab" [src]='transforme(image)' style="max-width: 400px;">
+        </div>
     </div>
 </div>
