@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RawlsApiService } from 'src/app/services/rawls-api.service';
@@ -12,6 +13,7 @@ export class PixelStatComponent implements OnInit, OnDestroy {
 
   jsonStat;
   coordPixelTab: string[] = [];
+  imageGraphTab: string[] = [];
   subtitleTab: string[] = [];
   hasSubtitle: boolean = false;
   statTab: any[][];
@@ -19,13 +21,23 @@ export class PixelStatComponent implements OnInit, OnDestroy {
   name_scene: string = this.router.url.split('/')[1];
 
   constructor(private rawlsApiService: RawlsApiService,
-              private router: Router) { }
+              private router: Router,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.statPixelSubscription = this.rawlsApiService.statPixelSubject.subscribe(
       (stat: string) => {
         if (stat !== undefined) {
-          console.log("stat = "+stat)
+          stat = stat.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+            // remove non-printable and other non-valid JSON chars
+          stat = stat.replace(/[\u0000-\u0019]+/g,""); 
           this.jsonStat = JSON.parse(stat);
           var x = 0;
           var row: number[];
@@ -33,32 +45,43 @@ export class PixelStatComponent implements OnInit, OnDestroy {
           this.coordPixelTab = [];
           this.hasSubtitle = false;
           this.jsonStat.forEach(element => {
-            console.log(element)
-            this.coordPixelTab.push(element[0]);
-            var json = JSON.parse(JSON.stringify(element[1]));
-            var stat = json,key;
-            row = [];
-            for (key in stat) {
-              if (stat.hasOwnProperty(key)) {
-                if (!this.hasSubtitle) {
-                  this.subtitleTab.push(key);
-                }
-                row.push(stat[key]);
+            if(x === 3){
+              var json = JSON.parse(JSON.stringify(element));
+              this.imageGraphTab = json;
+              for (let index = 0; index < this.imageGraphTab.length; index++) {
+                this.imageGraphTab[index] = "data:image/png;base64,"+this.imageGraphTab[index]
               }
+            }else{
+              this.coordPixelTab.push(element[0]);
+              var json = JSON.parse(JSON.stringify(element[1]));
+              var stat = json,key;
+              row = [];
+              for (key in stat) {
+                if (stat.hasOwnProperty(key)) {
+                  if (!this.hasSubtitle) {
+                    this.subtitleTab.push(key);
+                  }
+                  row.push(stat[key]);
+                }
+              }
+              if (!this.hasSubtitle) {
+                this.statTab = this.create2DArray(this.subtitleTab.length,3, (row, column) => 0);
+              }
+              for (let index = 0; index < row.length; index++) {
+                this.statTab[index][x] = row[index];
+              }
+              this.hasSubtitle = true;
             }
-            if (!this.hasSubtitle) {
-              this.statTab = this.create2DArray(this.subtitleTab.length,3, (row, column) => 0);
-            }
-            for (let index = 0; index < row.length; index++) {
-              this.statTab[index][x] = row[index];
-            }
-            this.hasSubtitle = true;
             x += 1;
           });
         }
       }
     );
     this.rawlsApiService.emitStatPixel();
+  }
+
+  transforme(image) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(image);
   }
 
   onBack() {

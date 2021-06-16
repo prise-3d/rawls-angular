@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RawlsApiService } from '../services/rawls-api.service';
@@ -29,11 +30,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   subtitleTab: string[] = [];
   hasSubtitle: boolean = false;
   statTab: number[][];
+  imageGraphTab: string[] = [];
 
   constructor(private rawlsApiService: RawlsApiService,
               private router: Router,
               private route: ActivatedRoute,
-              private formBuilder: FormBuilder) { 
+              private formBuilder: FormBuilder,
+              private sanitizer: DomSanitizer) { 
                 this.urlAPI = rawlsApiService.urlAPI;
               }
 
@@ -68,34 +71,50 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.statPixelSubscription = this.rawlsApiService.statPixelSubject.subscribe(
       (stat: string) => {
         if (stat !== undefined) {
-          this.hasSubtitle = false;
-          console.log("here")
+          stat = stat.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+            // remove non-printable and other non-valid JSON chars
+          stat = stat.replace(/[\u0000-\u0019]+/g,""); 
           this.jsonStat = JSON.parse(stat);
           var x = 0;
           var row: number[];
           this.subtitleTab = [];
           this.coordPixelTab = [];
+          this.hasSubtitle = false;
           this.jsonStat.forEach(element => {
-            console.log(element)
-            this.coordPixelTab.push(element[0]);
-            var json = JSON.parse(JSON.stringify(element[1]));
-            var stat = json,key;
-            row = [];
-            for (key in stat) {
-              if (stat.hasOwnProperty(key)) {
-                if (!this.hasSubtitle) {
-                  this.subtitleTab.push(key);
-                }
-                row.push(stat[key]);
+            if(x === 3){
+              var json = JSON.parse(JSON.stringify(element));
+              this.imageGraphTab = json;
+              for (let index = 0; index < this.imageGraphTab.length; index++) {
+                this.imageGraphTab[index] = "data:image/png;base64,"+this.imageGraphTab[index]
               }
+            }else{
+              this.coordPixelTab.push(element[0]);
+              var json = JSON.parse(JSON.stringify(element[1]));
+              var stat = json,key;
+              row = [];
+              for (key in stat) {
+                if (stat.hasOwnProperty(key)) {
+                  if (!this.hasSubtitle) {
+                    this.subtitleTab.push(key);
+                  }
+                  row.push(stat[key]);
+                }
+              }
+              if (!this.hasSubtitle) {
+                this.statTab = this.create2DArray(this.subtitleTab.length,3, (row, column) => 0);
+              }
+              for (let index = 0; index < row.length; index++) {
+                this.statTab[index][x] = row[index];
+              }
+              this.hasSubtitle = true;
             }
-            if (!this.hasSubtitle) {
-              this.statTab = this.create2DArray(this.subtitleTab.length,3, (row, column) => 0);
-            }
-            for (let index = 0; index < row.length; index++) {
-              this.statTab[index][x] = row[index];
-            }
-            this.hasSubtitle = true;
             x += 1;
           });
         }
@@ -117,6 +136,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.image = undefined;
       this.statActive = false;
     }
+  }
+
+  transforme(image) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(image);
   }
 
   initForm() {
