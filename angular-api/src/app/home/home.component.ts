@@ -168,6 +168,61 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate([this.name_scene,'png','ref'])
   }
 
+  onImage(index) {
+    var someElement= document.getElementById(index);
+    if (someElement.style.maxWidth === "20%") {
+      this.changeWidth(someElement,index);
+    } else {
+      var element = document.getElementsByClassName("col-xs-12")
+      if (element.length == 2) {
+        element[1].className = "col-xs-6";
+        element = document.getElementsByClassName("col-xs-6")
+        element[0].setAttribute("style","display:static;");
+        element = document.getElementsByClassName("table table-striped")
+        element[0].setAttribute("style","display:static;")
+        this.changeWidth(someElement,index,true)
+      } else {
+        element = document.getElementsByClassName("col-xs-6")
+        element[0].setAttribute("style","display:none;");
+        element[1].className = "col-xs-12";
+        element = document.getElementsByClassName("table table-striped")
+        element[0].setAttribute("style","display:none;")
+        this.changeWidth(someElement,index)
+      }
+    }
+  }
+
+  changeWidth(someElement: HTMLElement,index: string,all?: boolean) {
+    if (all) {
+        someElement= document.getElementById("0");
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("1");
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("2");
+        someElement.setAttribute("style","max-width: 100%;");
+    } else {
+      if (index == "0") {
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("1");
+        someElement.setAttribute("style","max-width: 20%;");
+        someElement= document.getElementById("2");
+        someElement.setAttribute("style","max-width: 20%;");
+        
+      }else if(index == "1"){
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("0");
+        someElement.setAttribute("style","max-width: 20%;");
+        someElement= document.getElementById("2");
+        someElement.setAttribute("style","max-width: 20%;");
+      }else {
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("0");
+        someElement.setAttribute("style","max-width: 20%;");
+        someElement= document.getElementById("1");
+        someElement.setAttribute("style","max-width: 20%;");
+      }
+    }
+  }
   create2DArray(rows, columns, value = (x, y) => 0) {
     var array = new Array(rows);
     for (var i = 0; i < rows; i++) {

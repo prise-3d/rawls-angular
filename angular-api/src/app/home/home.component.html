@@ -47,8 +47,10 @@
                         </tr>
                     </tbody>
                 </table>
-                <div>
-                    <img *ngFor="let image of imageGraphTab" [src]='transforme(image)' style="max-width: 400px;">
+                <div style="display: flex;">
+                    <div *ngFor="let image of imageGraphTab; let i = index" [id]='i'>
+                        <img [src]='transforme(image)' style="max-width: 100%; display: flexbox;" (click)="onImage(i)">
+                    </div>
                 </div>
             </div>
         </div>
