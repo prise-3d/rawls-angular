@@ -124,14 +124,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     
   }
 
-  onChange(deviceValue) {
+  async onChange(deviceValue) {
     if (deviceValue !== "") {
       this.rawlsApiService.getImage(deviceValue);
       this.rawlsApiService.emitImage();
       this.initForm();
       this.rawlsApiService.emitStatPixel();
-
       this.name_scene = deviceValue;
+      var element = document.getElementsByClassName("ngxImageZoomFull");
+      if (element[0]) {
+        element[0].setAttribute("src",this.urlAPI+deviceValue+"/png/ref")
+      }
     } else {
       this.image = undefined;
       this.statActive = false;
@@ -164,10 +167,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.statActive = true;
   }
 
-  onClick() {
-    this.router.navigate([this.name_scene,'png','ref'])
-  }
-
   onImage(index) {
     var someElement= document.getElementById(index);
     if (someElement.style.maxWidth === "20%") {
@@ -189,6 +188,39 @@ export class HomeComponent implements OnInit, OnDestroy {
         element[0].setAttribute("style","display:none;")
         this.changeWidth(someElement,index)
       }
+    }
+  }
+
+  onClick() {
+    var element = document.getElementsByClassName("ngxImageZoomFullContainer ngxImageZoomLensEnabled");
+    console.log(element[0])
+    console.log(element[0].getAttribute("style"))
+    var border = 0;
+    var reg = /border-radius: /
+    border = this.searchElement(element,reg,(String(reg).length - 2))
+    reg = /top: /
+    var y = this.searchElement(element,reg,(String(reg).length - 2)) + border
+    reg = /left: /
+    var x = this.searchElement(element,reg,(String(reg).length - 2)) + border
+    // this.rawlsApiService.getStatPixel(this.name_scene,x,y);
+    // this.rawlsApiService.emitStatPixel();
+  }
+
+  searchElement(element:HTMLCollectionOf<Element>,regexp: RegExp,lengthRegexp: number) {
+    var a = element[0].getAttribute("style").search(regexp);
+    if ( a == -1 ) { 
+      alert("Refresh Page")
+    } else { 
+      var border: string = "";
+      for (let index = a+lengthRegexp; index < element[0].getAttribute("style").length; index++) {
+        const char = element[0].getAttribute("style")[index];
+        if (char==="p") {
+          break;
+        } else {
+          border += char;
+        }
+      }
+      return Number(border); 
     }
   }
 
@@ -223,6 +255,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   create2DArray(rows, columns, value = (x, y) => 0) {
     var array = new Array(rows);
     for (var i = 0; i < rows; i++) {
