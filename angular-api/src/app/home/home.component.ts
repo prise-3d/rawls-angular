@@ -124,14 +124,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     
   }
 
-  onChange(deviceValue) {
+  async onChange(deviceValue) {
     if (deviceValue !== "") {
       this.rawlsApiService.getImage(deviceValue);
       this.rawlsApiService.emitImage();
       this.initForm();
       this.rawlsApiService.emitStatPixel();
-
       this.name_scene = deviceValue;
+      var element = document.getElementsByClassName("ngxImageZoomFull");
+      if (element[0]) {
+        element[0].setAttribute("src",this.urlAPI+deviceValue+"/png/ref")
+      }
     } else {
       this.image = undefined;
       this.statActive = false;
@@ -164,8 +167,93 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.statActive = true;
   }
 
+  onImage(index) {
+    var someElement= document.getElementById(index);
+    if (someElement.style.maxWidth === "20%") {
+      this.changeWidth(someElement,index);
+    } else {
+      var element = document.getElementsByClassName("col-xs-12")
+      if (element.length == 2) {
+        element[1].className = "col-xs-6";
+        element = document.getElementsByClassName("col-xs-6")
+        element[0].setAttribute("style","display:static;");
+        element = document.getElementsByClassName("table table-striped")
+        element[0].setAttribute("style","display:static;")
+        this.changeWidth(someElement,index,true)
+      } else {
+        element = document.getElementsByClassName("col-xs-6")
+        element[0].setAttribute("style","display:none;");
+        element[1].className = "col-xs-12";
+        element = document.getElementsByClassName("table table-striped")
+        element[0].setAttribute("style","display:none;")
+        this.changeWidth(someElement,index)
+      }
+    }
+  }
+
   onClick() {
-    this.router.navigate([this.name_scene,'png','ref'])
+    var element = document.getElementsByClassName("ngxImageZoomFullContainer ngxImageZoomLensEnabled");
+    console.log(element[0])
+    console.log(element[0].getAttribute("style"))
+    var border = 0;
+    var reg = /border-radius: /
+    border = this.searchElement(element,reg,(String(reg).length - 2))
+    reg = /top: /
+    var y = this.searchElement(element,reg,(String(reg).length - 2)) + border
+    reg = /left: /
+    var x = this.searchElement(element,reg,(String(reg).length - 2)) + border
+    // this.rawlsApiService.getStatPixel(this.name_scene,x,y);
+    // this.rawlsApiService.emitStatPixel();
+  }
+
+  searchElement(element:HTMLCollectionOf<Element>,regexp: RegExp,lengthRegexp: number) {
+    var a = element[0].getAttribute("style").search(regexp);
+    if ( a == -1 ) { 
+      alert("Refresh Page")
+    } else { 
+      var border: string = "";
+      for (let index = a+lengthRegexp; index < element[0].getAttribute("style").length; index++) {
+        const char = element[0].getAttribute("style")[index];
+        if (char==="p") {
+          break;
+        } else {
+          border += char;
+        }
+      }
+      return Number(border); 
+    }
+  }
+
+  changeWidth(someElement: HTMLElement,index: string,all?: boolean) {
+    if (all) {
+        someElement= document.getElementById("0");
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("1");
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("2");
+        someElement.setAttribute("style","max-width: 100%;");
+    } else {
+      if (index == "0") {
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("1");
+        someElement.setAttribute("style","max-width: 20%;");
+        someElement= document.getElementById("2");
+        someElement.setAttribute("style","max-width: 20%;");
+        
+      }else if(index == "1"){
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("0");
+        someElement.setAttribute("style","max-width: 20%;");
+        someElement= document.getElementById("2");
+        someElement.setAttribute("style","max-width: 20%;");
+      }else {
+        someElement.setAttribute("style","max-width: 100%;");
+        someElement= document.getElementById("0");
+        someElement.setAttribute("style","max-width: 20%;");
+        someElement= document.getElementById("1");
+        someElement.setAttribute("style","max-width: 20%;");
+      }
+    }
   }
 
   create2DArray(rows, columns, value = (x, y) => 0) {

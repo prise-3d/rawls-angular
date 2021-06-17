@@ -9,8 +9,19 @@
         </p>
         <div id="Global">
             <div class="col-xs-6" *ngIf="image">
-                <div>
-                    <img *ngIf="!error" style="max-width: 100%;" [src]="image" (click)="onClick()">
+                <div id="imageRef">
+                    <lib-ngx-image-zoom
+                        *ngIf="!error"
+                        style="max-width: 100%;"
+                        [thumbImage]=image
+                        [magnification]="10"
+                        [enableScrollZoom]="true"
+                        [enableLens]="true"
+                        [circularLens]="true"
+                        [maxZoomRatio]="30"
+                        [scrollStepSize]="0.5"
+                        (click)="onClick()"
+                    ></lib-ngx-image-zoom>
                     <p *ngIf="error">{{ image }}</p>
                 </div>
                 <div>
@@ -47,8 +58,10 @@
                         </tr>
                     </tbody>
                 </table>
-                <div>
-                    <img *ngFor="let image of imageGraphTab" [src]='transforme(image)' style="max-width: 400px;">
+                <div style="display: flex;">
+                    <div *ngFor="let image of imageGraphTab; let i = index" [id]='i'>
+                        <img [src]='transforme(image)' style="max-width: 100%; display: flexbox;" (click)="onImage(i)">
+                    </div>
                 </div>
             </div>
         </div>

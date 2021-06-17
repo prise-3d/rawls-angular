@@ -16,6 +16,7 @@ import { UpComponent } from './up/up.component';
 import { PixelStatFormComponent } from './stat/pixel-stat/pixel-stat-form/pixel-stat-form.component';
 import { ListPixelStatFormComponent } from './stat/list-pixel-stat/list-pixel-stat-form/list-pixel-stat-form.component';
 import { MouseWheelDirective } from './mousewheel.directive'
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 // link between path Angular and component
 const appRoutes: Routes = [
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxImageZoomModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [

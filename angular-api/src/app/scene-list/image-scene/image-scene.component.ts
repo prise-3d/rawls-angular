@@ -16,12 +16,6 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
 
   error: boolean = false;
 
-  mouseWheelDir: string = '';
-  imgWidth: number;
-  firstCoordinate: boolean = true;
-  naturalWidth: number;
-  naturalHeight: number;
-
   constructor(private route: ActivatedRoute,
               private rawlsApiService: RawlsApiService,
               private router: Router) { }
@@ -36,9 +30,6 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
           } else {
             this.error = false;
             this.image = image_path;
-            const img = new Image();
-            img.src = this.image;
-            img.onload = () => this.getWidth(img);
           }
         }  
       }
@@ -47,23 +38,38 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
     this.rawlsApiService.emitImage();
   }
 
-  getWidth(img){
-    this.naturalWidth = img.naturalWidth;
-    this.naturalHeight = img.naturalHeight;
-    this.imgWidth = img.naturalWidth;
+  onClick() {
+    var element = document.getElementsByClassName("ngxImageZoomFullContainer ngxImageZoomLensEnabled");
+    console.log(element[0])
+    console.log(element[0].getAttribute("style"))
+    var border = 0;
+    var reg = /border-radius: /
+    border = this.searchElement(element,reg,(String(reg).length - 2))
+    reg = /top: /
+    var y = this.searchElement(element,reg,(String(reg).length - 2)) + border
+    reg = /left: /
+    var x = this.searchElement(element,reg,(String(reg).length - 2)) + border
+    this.rawlsApiService.getStatPixel(this.name_scene,x,y);
+    this.rawlsApiService.emitStatPixel();
+    this.router.navigate(['/'+this.name_scene+'/'+x+'/'+y])
   }
 
-  onImage(event) {
-    console.log(event)
-    console.log("(x,y) : "+event.offsetX+","+event.offsetY);
-    var scale = this.imgWidth/this.naturalWidth;
-    console.log("scale = "+scale);
-    var pixelX = (event.offsetX - event.offsetX%scale)/scale;
-    var pixelY = (event.offsetY - event.offsetY%scale)/scale;
-    console.log("x, y"+pixelX+","+pixelY)
-    this.rawlsApiService.getStatPixel(this.name_scene,pixelX,pixelY);
-    this.rawlsApiService.emitStatPixel();
-    this.router.navigate(['/'+this.name_scene+'/'+pixelX+'/'+pixelY])
+  searchElement(element:HTMLCollectionOf<Element>,regexp: RegExp,lengthRegexp: number) {
+    var a = element[0].getAttribute("style").search(regexp);
+    if ( a == -1 ) { 
+      alert("Refresh Page")
+    } else { 
+      var border: string = "";
+      for (let index = a+lengthRegexp; index < element[0].getAttribute("style").length; index++) {
+        const char = element[0].getAttribute("style")[index];
+        if (char==="p") {
+          break;
+        } else {
+          border += char;
+        }
+      }
+      return Number(border); 
+    }
   }
 
   onList() {
@@ -77,21 +83,6 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
   onStatList() {
     this.router.navigate([this.name_scene+'/listPixelStatForm']);
   }
-
-  mouseWheelUpFunc() {
-    this.imgWidth = this.imgWidth+50;
-  }
-
-  mouseWheelDownFunc() {
-    if(this.imgWidth-50 > 10){
-      this.imgWidth = this.imgWidth-50;
-    }
-  }
-
-  yes() {
-    console.log("image "+this.image)
-  }
-
 
   ngOnDestroy(){
     this.imageSubscription.unsubscribe();
