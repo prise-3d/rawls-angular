@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   name_scene: string;
 
   jsonStat;
+  previousStat: string;
+  isLoaded: boolean = false;
   coordPixelTab: string[] = [];
   subtitleTab: string[] = [];
   hasSubtitle: boolean = false;
@@ -117,14 +119,20 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
             x += 1;
           });
+          if (stat === this.previousStat) {
+            this.isLoaded = false;
+          } else {
+            this.isLoaded = true;
+          }
         }
+        this.previousStat = stat;
       }
     );
     this.rawlsApiService.emitStatPixel();
     
   }
 
-  async onChange(deviceValue) {
+  onChange(deviceValue) {
     if (deviceValue !== "") {
       this.rawlsApiService.getImage(deviceValue);
       this.rawlsApiService.emitImage();
@@ -174,6 +182,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       var element = document.getElementsByClassName("col-xs-12")
       if (element.length == 2) {
+        var a = document.getElementById("sceneSelect")
+        a.setAttribute("style","display:static;");
         element[1].className = "col-xs-6";
         element = document.getElementsByClassName("col-xs-6")
         element[0].setAttribute("style","display:static;");
@@ -181,6 +191,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         element[0].setAttribute("style","display:static;")
         this.changeWidth(someElement,index,true)
       } else {
+        var a = document.getElementById("sceneSelect")
+        a.setAttribute("style","display:none;");
         element = document.getElementsByClassName("col-xs-6")
         element[0].setAttribute("style","display:none;");
         element[1].className = "col-xs-12";
@@ -202,8 +214,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     var y = this.searchElement(element,reg,(String(reg).length - 2)) + border
     reg = /left: /
     var x = this.searchElement(element,reg,(String(reg).length - 2)) + border
-    // this.rawlsApiService.getStatPixel(this.name_scene,x,y);
-    // this.rawlsApiService.emitStatPixel();
+    this.rawlsApiService.getStatPixel(this.name_scene,x,y);
+    this.rawlsApiService.emitStatPixel();
   }
 
   searchElement(element:HTMLCollectionOf<Element>,regexp: RegExp,lengthRegexp: number) {

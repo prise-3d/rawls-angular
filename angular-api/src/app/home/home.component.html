@@ -1,7 +1,7 @@
 <div class="rows">
     <div class="col-xs-12">
         <h1>Home Page</h1>
-        <p>
+        <p id="sceneSelect">
             <label for="scene-select">Choose a scene:</label><br>
             <select id="scene-select" (change)="onChange($event.target.value)">
                 <option value="{{ scene }}" *ngFor="let scene of list_scenes" >{{ scene }} </option>
@@ -9,10 +9,9 @@
         </p>
         <div id="Global">
             <div class="col-xs-6" *ngIf="image">
-                <div id="imageRef">
+                <div id="imageRef" class="modal-photo-details__photo" [ngStyle]="{width: zoomContainerWidth+'px', height: zoomContainerHeight+'px'}">
                     <lib-ngx-image-zoom
                         *ngIf="!error"
-                        style="max-width: 100%;"
                         [thumbImage]=image
                         [magnification]="10"
                         [enableScrollZoom]="true"
@@ -44,7 +43,7 @@
                 </div>
             </div>
             <div class="col-xs-6">
-                <table class="table table-striped">
+                <table class="table table-striped" *ngIf="isLoaded">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -58,11 +57,12 @@
                         </tr>
                     </tbody>
                 </table>
-                <div style="display: flex;">
+                <div style="display: flex;" *ngIf="isLoaded">
                     <div *ngFor="let image of imageGraphTab; let i = index" [id]='i'>
                         <img [src]='transforme(image)' style="max-width: 100%; display: flexbox;" (click)="onImage(i)">
                     </div>
                 </div>
+                <p *ngIf="!isLoaded">Loading statistics...</p>
             </div>
         </div>
     </div>

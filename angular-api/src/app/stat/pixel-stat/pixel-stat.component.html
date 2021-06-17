@@ -1,7 +1,7 @@
 <div class="rows">
     <div class="col-xs-12">
         <button class="btn btn-default" (click)="onBack()">Back to new stat</button>
-        <table class="table table-striped">
+        <table class="table table-striped" *ngIf="isLoaded">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -15,8 +15,9 @@
                 </tr>
             </tbody>
         </table>
-        <div>
+        <div *ngIf="isLoaded">
             <img *ngFor="let image of imageGraphTab" [src]='transforme(image)' style="max-width: 400px;">
         </div>
+        <p *ngIf="!isLoaded">Loading statistics...</p>
     </div>
 </div>

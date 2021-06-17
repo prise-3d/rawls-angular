@@ -13,6 +13,7 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
   image: string;
   imageSubscription: Subscription;
   name_scene: string = this.route.snapshot.params['name_scene'];
+  realSrc: string;
 
   error: boolean = false;
 
@@ -36,12 +37,18 @@ export class ImageSceneComponent implements OnInit, OnDestroy {
     );
     this.rawlsApiService.getImage(this.name_scene);
     this.rawlsApiService.emitImage();
+    this.realSrc = this.rawlsApiService.urlAPI+this.name_scene+"/png/ref"
+  }
+
+  onHover() {
+    var element = document.getElementsByClassName("ngxImageZoomFull");
+      if (element[0]) {
+        element[0].setAttribute("src",this.realSrc)
+      }
   }
 
   onClick() {
     var element = document.getElementsByClassName("ngxImageZoomFullContainer ngxImageZoomLensEnabled");
-    console.log(element[0])
-    console.log(element[0].getAttribute("style"))
     var border = 0;
     var reg = /border-radius: /
     border = this.searchElement(element,reg,(String(reg).length - 2))

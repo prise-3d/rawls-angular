@@ -12,6 +12,8 @@ import { RawlsApiService } from 'src/app/services/rawls-api.service';
 export class PixelStatComponent implements OnInit, OnDestroy {
 
   jsonStat;
+  previousStat: string;
+  isLoaded: boolean = false;
   coordPixelTab: string[] = [];
   imageGraphTab: string[] = [];
   subtitleTab: string[] = [];
@@ -74,7 +76,13 @@ export class PixelStatComponent implements OnInit, OnDestroy {
             }
             x += 1;
           });
+          if (stat === this.previousStat) {
+            this.isLoaded = false;
+          } else {
+            this.isLoaded = true;
+          }
         }
+        this.previousStat = stat;
       }
     );
     this.rawlsApiService.emitStatPixel();
