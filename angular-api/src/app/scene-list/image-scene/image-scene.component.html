@@ -8,6 +8,7 @@
             <h1>Image :</h1>
             <lib-ngx-image-zoom
                 *ngIf="!error"
+                (mouseover)="onHover()"
                 [thumbImage]=image
                 [magnification]="10"
                 [enableScrollZoom]="true"
