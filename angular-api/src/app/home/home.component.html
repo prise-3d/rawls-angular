@@ -62,7 +62,7 @@
                         <img [src]='transforme(image)' style="max-width: 100%; display: flexbox;" (click)="onImage(i)">
                     </div>
                 </div>
-                <p *ngIf="!isLoaded">Loading statistics...</p>
+                <p *ngIf="!isLoaded && isLoaded !== undefined">Loading statistics...</p>
             </div>
         </div>
     </div>

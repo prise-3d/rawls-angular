@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   jsonStat;
   previousStat: string;
-  isLoaded: boolean = false;
+  isLoaded: boolean;
   coordPixelTab: string[] = [];
   subtitleTab: string[] = [];
   hasSubtitle: boolean = false;
@@ -129,7 +129,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
     this.rawlsApiService.emitStatPixel();
-    
+    console.log(this.isLoaded)
   }
 
   onChange(deviceValue) {
@@ -214,8 +214,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     var y = this.searchElement(element,reg,(String(reg).length - 2)) + border
     reg = /left: /
     var x = this.searchElement(element,reg,(String(reg).length - 2)) + border
-    this.rawlsApiService.getStatPixel(this.name_scene,x,y);
-    this.rawlsApiService.emitStatPixel();
+    // this.rawlsApiService.getStatPixel(this.name_scene,x,y);
+    // this.rawlsApiService.emitStatPixel();
+    this.statPixelForm.get('x').setValue(x);
+   this.statPixelForm.get('y').setValue(y);
   }
 
   searchElement(element:HTMLCollectionOf<Element>,regexp: RegExp,lengthRegexp: number) {
