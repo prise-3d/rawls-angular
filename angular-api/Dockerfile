@@ -1,11 +1,13 @@
 ### STAGE 1: Build ###
-FROM node:12.18.2-alpine AS buildxyz
+FROM node:12.7-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
-RUN npm install -g @angular/cli
-RUN npm install --save-dev @angular-devkit/build-angular
-
 COPY . .
 RUN npm run build
-CMD ng serve
+
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/app/dist/angular-api /usr/share/nginx/html
+
