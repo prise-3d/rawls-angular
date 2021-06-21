@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+    app:
+        container_name: stats-angular
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - "4201:4200"
+
+volumes:
+    content:
+          
+
+         
