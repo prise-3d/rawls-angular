@@ -9,6 +9,7 @@ services:
         restart: always
         ports:
             - "4201:8088"
+            - "4200:4200"
 
 volumes:
     content:
